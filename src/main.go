@@ -1,9 +1,9 @@
 package main
 
 import (
-	"fmt"
+	"1msnakes/visualisation"
 )
 
 func main() {
-	fmt.Println("hello w")
+	visualisation.Visualize()
 }
