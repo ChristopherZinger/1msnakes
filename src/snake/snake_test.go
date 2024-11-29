@@ -44,8 +44,8 @@ func TestSnakeMove(t *testing.T) {
 		head := s.getHead()
 
 		if head.X != c.newHead.X || head.Y != c.newHead.Y || len(s.Body) != c.numPoints {
-			fmt.Printf("expected:\t x: %d, y: %d, num: %d\n", c.newHead.X, c.newHead.Y, c.numPoints)
-			fmt.Printf("headX:\t\t x: %d, y: %d, num: %d\n", head.X, head.Y, len(s.Body))
+			fmt.Printf("expected:\t x: %f, y: %f, num: %d\n", c.newHead.X, c.newHead.Y, c.numPoints)
+			fmt.Printf("headX:\t\t x: %f, y: %f, num: %d\n", head.X, head.Y, len(s.Body))
 			fmt.Println("----")
 			t.Error("failed to move snake head\n")
 		}

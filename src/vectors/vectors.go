@@ -5,14 +5,14 @@ import (
 	"math"
 )
 
-type Vector struct{ X, Y int }
+type Vector struct{ X, Y float64 }
 
 func (v *Vector) Len() float64 {
 	return math.Sqrt(float64(v.X*v.X + v.Y*v.Y))
 }
 
 func (v *Vector) print() {
-	fmt.Printf("Vector x: %d, y: %d. \n", v.X, v.Y)
+	fmt.Printf("Vector x: %f, y: %f. \n", v.X, v.Y)
 }
 
 func VectorSum(vectors []*Vector) *Vector {

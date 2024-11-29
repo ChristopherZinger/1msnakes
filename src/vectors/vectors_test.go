@@ -46,7 +46,7 @@ func TestDoVectorsShareDirection(t *testing.T) {
 
 	for _, c := range cases[:] {
 		if DoVectorsShareDirection(&c.v1, &c.v2) != c.result {
-			fmt.Printf("expected %t for x1: %d, y1: %d AND x2: %d, y2: %d.\n", c.result, c.v1.X, c.v1.Y, c.v2.X, c.v2.Y)
+			fmt.Printf("expected %t for x1: %f, y1: %f AND x2: %f, y2: %f.\n", c.result, c.v1.X, c.v1.Y, c.v2.X, c.v2.Y)
 
 			t.Error("failed same direction test")
 		}
@@ -96,7 +96,7 @@ func TestAreVectorsParallel(t *testing.T) {
 	for _, c := range cases[:] {
 		if AreVectorsParallel(&c.v1, &c.v2) != c.result {
 			fmt.Printf(
-				"Expected AreVectorsParallel v1x:%d v1y:%d AND v2x:%d v2y:%d to be %t",
+				"Expected AreVectorsParallel v1x:%f v1y:%f AND v2x:%f v2y:%f to be %t",
 				c.v1.X, c.v1.Y, c.v2.X, c.v2.Y, c.result,
 			)
 			t.Error(`failed AreVectorsParallel`)
@@ -128,8 +128,8 @@ func TestVectorSum(t *testing.T) {
 	for _, c := range cases {
 		r := VectorSum(c.vectors)
 		if c.result.X != r.X || c.result.Y != r.Y {
-			fmt.Printf("Expected Result: x: %d, y: %d.\n", c.result.X, c.result.Y)
-			fmt.Printf("Received Result: x: %d, y: %d.\n", r.X, r.Y)
+			fmt.Printf("Expected Result: x: %f, y: %f.\n", c.result.X, c.result.Y)
+			fmt.Printf("Received Result: x: %f, y: %f.\n", r.X, r.Y)
 			t.Error("Failed Summing Vectors")
 		}
 
