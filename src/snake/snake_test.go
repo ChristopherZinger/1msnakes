@@ -78,3 +78,51 @@ func TestSnakeMove(t *testing.T) {
 		}
 	}
 }
+
+func TestGetSnakePixels(t *testing.T) {
+
+	type Case struct {
+		snake  []*vectors.Vector
+		pixels []*vectors.Vector
+	}
+
+	cases := [...]Case{
+		{
+			snake: []*vectors.Vector{{X: 4, Y: 0}, {X: 0, Y: 0}},
+			pixels: []*vectors.Vector{
+				{X: 4, Y: 0},
+				{X: 3, Y: 0},
+				{X: 2, Y: 0},
+				{X: 1, Y: 0},
+				{X: 0, Y: 0},
+			},
+		},
+		{
+			snake: []*vectors.Vector{{X: 4, Y: 0}, {X: 2, Y: 0}, {X: 2, Y: 2}},
+			pixels: []*vectors.Vector{
+				{X: 4, Y: 0},
+				{X: 3, Y: 0},
+				{X: 2, Y: 0},
+				{X: 2, Y: 1},
+				{X: 2, Y: 2},
+			},
+		},
+	}
+
+	for _, c := range cases {
+		s := CreateSnake(c.snake)
+		pixels := s.GetPixels()
+
+		if len(pixels) != len(c.pixels) {
+			t.Error("Incorrect number of pixels")
+		}
+
+		for i, px := range pixels {
+			if px.X != c.pixels[i].X || px.Y != c.pixels[i].Y {
+				t.Error("Incorrect snake pixel positions")
+			}
+
+		}
+	}
+
+}

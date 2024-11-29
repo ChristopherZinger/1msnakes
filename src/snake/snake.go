@@ -13,6 +13,23 @@ func (s *Snake) Move(d vectors.Directions) {
 	s.moveTail()
 }
 
+func (s *Snake) GetPixels() []vectors.Vector {
+	var pixels []vectors.Vector
+
+	prevPixel := s.getHead()
+	pixels = append(pixels, *prevPixel) // this should copy head ??
+
+	for i := 0; i < len(s.Body)-1; i++ {
+		mv := vectors.VectorSubstract(s.Body[i+1], s.Body[i]).Unit()
+		for s.Body[i+1].IsEqual(prevPixel) == false {
+			pixel := vectors.VectorSum([]*vectors.Vector{mv, prevPixel})
+			pixels = append(pixels, *pixel)
+			prevPixel = pixel
+		}
+	}
+	return pixels
+}
+
 func (s *Snake) moveHead(mv *vectors.Vector) {
 	currentHead := s.getHead()
 	newHead := vectors.VectorSum((&[...]*vectors.Vector{currentHead, mv})[:])
