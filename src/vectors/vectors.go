@@ -11,6 +11,14 @@ func (v *Vector) Len() float64 {
 	return math.Sqrt(float64(v.X*v.X + v.Y*v.Y))
 }
 
+func (v *Vector) Unit() *Vector {
+	vResult := &Vector{
+		X: float64(v.X) / v.Len(),
+		Y: float64(v.Y) / v.Len(),
+	}
+	return vResult
+}
+
 func (v *Vector) print() {
 	fmt.Printf("Vector x: %f, y: %f. \n", v.X, v.Y)
 }
