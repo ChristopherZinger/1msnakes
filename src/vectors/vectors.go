@@ -39,6 +39,10 @@ func (v *Vector) print() {
 	fmt.Printf("Vector x: %f, y: %f. \n", v.X, v.Y)
 }
 
+func (self *Vector) IsEqual(vec *Vector) bool {
+	return self.X == vec.X && self.Y == vec.Y
+}
+
 func VectorSum(vectors []*Vector) *Vector {
 	vector := Vector{}
 	for _, v := range vectors {
