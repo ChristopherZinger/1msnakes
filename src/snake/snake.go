@@ -7,19 +7,9 @@ import (
 
 type Snake struct{ Body []*vectors.Vector }
 
-type Directions int8
-
-const (
-	W Directions = iota
-	E
-	N
-	S
-)
-
-// TODO: move function should only take direction since
-// vector has to be always of length 1
-func (s *Snake) Move(mv *vectors.Vector) {
-	s.moveHead(mv)
+func (s *Snake) Move(d vectors.Directions) {
+	mv := vectors.DirToVec[d]
+	s.moveHead(&mv)
 	s.moveTail()
 }
 

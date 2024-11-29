@@ -8,7 +8,7 @@ import (
 
 func TestSnakeMove(t *testing.T) {
 	type Case struct {
-		mv        vectors.Vector
+		mvDir     vectors.Directions
 		newHead   vectors.Vector
 		newTail   vectors.Vector
 		snake     []*vectors.Vector
@@ -17,35 +17,35 @@ func TestSnakeMove(t *testing.T) {
 
 	cases := [...]Case{
 		{
-			mv:        vectors.Vector{X: 1, Y: 0},
+			mvDir:     vectors.VecE,
 			newHead:   vectors.Vector{X: 11, Y: 0},
 			snake:     []*vectors.Vector{{X: 10, Y: 0}, {X: 0, Y: 0}},
 			newTail:   vectors.Vector{X: 1, Y: 0},
 			numPoints: 2,
 		},
 		{
-			mv:        vectors.Vector{X: 0, Y: 1},
+			mvDir:     vectors.VecN,
 			newHead:   vectors.Vector{X: 10, Y: 1},
 			snake:     []*vectors.Vector{{X: 10, Y: 0}, {X: 0, Y: 0}},
 			newTail:   vectors.Vector{X: 1, Y: 0},
 			numPoints: 3,
 		},
 		{
-			mv:        vectors.Vector{X: 0, Y: -1},
+			mvDir:     vectors.VecS,
 			newHead:   vectors.Vector{X: 10, Y: -1},
 			snake:     []*vectors.Vector{{X: 10, Y: 0}, {X: 0, Y: 0}},
 			newTail:   vectors.Vector{X: 1, Y: 0},
 			numPoints: 3,
 		},
 		{
-			mv:        vectors.Vector{X: -1, Y: 0},
+			mvDir:     vectors.VecW,
 			newHead:   vectors.Vector{X: 9, Y: 0},
 			snake:     []*vectors.Vector{{X: 10, Y: 0}, {X: 0, Y: 0}},
 			newTail:   vectors.Vector{X: 1, Y: 0},
 			numPoints: 3,
 		},
 		{
-			mv:        vectors.Vector{X: 1, Y: 0},
+			mvDir:     vectors.VecE,
 			newHead:   vectors.Vector{X: 11, Y: 0},
 			snake:     []*vectors.Vector{{X: 10, Y: 0}, {X: 5, Y: 0}, {X: 5, Y: 1}},
 			newTail:   vectors.Vector{X: 5, Y: 0},
@@ -56,7 +56,7 @@ func TestSnakeMove(t *testing.T) {
 	for _, c := range cases {
 		s := CreateSnake(c.snake)
 
-		s.Move(&c.mv)
+		s.Move(c.mvDir)
 
 		if len(s.Body) != c.numPoints {
 			fmt.Printf("expected num of body points:\t : %d, but got: %d\n", c.numPoints, len(s.Body))

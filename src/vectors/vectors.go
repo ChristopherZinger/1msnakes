@@ -5,6 +5,22 @@ import (
 	"math"
 )
 
+type Directions int
+
+const (
+	VecW Directions = iota
+	VecE
+	VecN
+	VecS
+)
+
+var DirToVec = map[Directions]Vector{
+	VecW: {X: -1, Y: 0},
+	VecE: {X: 1, Y: 0},
+	VecS: {X: 0, Y: -1},
+	VecN: {X: 0, Y: 1},
+}
+
 type Vector struct{ X, Y float64 }
 
 func (v *Vector) Len() float64 {
