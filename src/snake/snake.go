@@ -16,32 +16,32 @@ const (
 	S
 )
 
-// it only work for mv vectors of length = 1
-// becase tail always move by 1 unit
+// TODO: move function should only take direction since
+// vector has to be always of length 1
 func (s *Snake) Move(mv *vectors.Vector) {
-	currentHead := s.getHead()
-	// currentTail := s.getTail()
+	s.moveHead(mv)
+	s.moveTail()
+}
 
+func (s *Snake) moveHead(mv *vectors.Vector) {
+	currentHead := s.getHead()
 	newHead := vectors.VectorSum((&[...]*vectors.Vector{currentHead, mv})[:])
 
 	if vectors.DoVectorsShareDirection(s.getHeadVec(), mv) {
 		currentHead.X = newHead.X
 		currentHead.Y = newHead.Y
 	} else {
-		//vLen := currentTail.Len()
-		// uv := vectors.Vector{
-		//	X: float64(currentTail.X) / vLen,
-		//	Y: float64(currentTail.Y) / vLen,
-		//}
-
 		s.Body = arrays.Prepend(s.Body, newHead)
 	}
+}
 
-	// TODO: move the tail
-
+func (s *Snake) moveTail() {
 	tailVec := s.getTailVec()
 	if tailVec.Len() > 1 {
-		// is tail vector > 1 ? move tail point
+		moveUnitVec := tailVec.Unit()
+		newTail := vectors.VectorSum([]*vectors.Vector{moveUnitVec, s.getTail()})
+		tailIndex := len(s.Body) - 1
+		s.Body[tailIndex] = newTail
 	} else {
 		s.Body = s.Body[:len(s.Body)-1]
 	}
@@ -67,13 +67,7 @@ func (s *Snake) getTailVec() *vectors.Vector {
 	return vectors.VectorSubstract(v2, v1)
 }
 
-// TODO: pass initial shape or points
-func CreateSnake() *Snake {
-	arr := [10]*vectors.Vector{}
-	body := arr[:2]
-	body[0] = &vectors.Vector{X: 10, Y: 0}
-	body[1] = &vectors.Vector{X: 0, Y: 0}
-
+func CreateSnake(body []*vectors.Vector) *Snake {
 	s := Snake{Body: body}
 	return &s
 }
