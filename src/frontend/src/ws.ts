@@ -1,3 +1,6 @@
+import { getSerializedSnakeMove } from "./snakeMoveProto"
+import * as sm from "./generated/protos/snakemove"
+
 enum WsEventType {
   sendMessage = 'send_message'
 }
@@ -59,13 +62,12 @@ export function testWebSocketConnection() {
     console.log(ev)
   })
 
-  let i = 0;
-  setInterval(function() {
-    conn.sendEvent({ type: WsEventType.sendMessage, payload: "Hello Word: " + i });
-    i++
+  const interval = setInterval(function() {
+    conn.sendEvent({
+      type: WsEventType.sendMessage,
+      payload: getSerializedSnakeMove(sm.main.Direction.E)
+    })
   }, 1000)
+  return interval
 }
-
-
-
 
