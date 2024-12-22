@@ -80,7 +80,7 @@ type SnakeMoveMessage struct {
 
 func (p *Player) receiveMesssages() {
 	defer func() {
-		p.manager.RemovePlayer(p)
+		p.manager.removePlayer(p)
 	}()
 
 	for {
@@ -112,13 +112,13 @@ func (p *Player) receiveMesssages() {
 		case 0:
 			p.Snake.SetNextMv(vectors.VecN)
 		case 1:
-			p.Snake.SetNextMv(vectors.VecN)
+			p.Snake.SetNextMv(vectors.VecE)
 		case 2:
-			p.Snake.SetNextMv(vectors.VecN)
+			p.Snake.SetNextMv(vectors.VecS)
 		case 3:
-			p.Snake.SetNextMv(vectors.VecN)
+			p.Snake.SetNextMv(vectors.VecW)
 		default:
-			p.Snake.SetNextMv(vectors.VecN)
+			panic("unknown_direction")
 		}
 	}
 }
