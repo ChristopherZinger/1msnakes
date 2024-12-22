@@ -5,7 +5,18 @@ import (
 	"1msnakes/vectors"
 )
 
-type Snake struct{ Body []*vectors.Vector }
+type Snake struct {
+	Body   []*vectors.Vector
+	nextMv vectors.Directions
+}
+
+func (s *Snake) SetNextMv(v vectors.Directions) {
+	s.nextMv = v
+}
+
+func (s *Snake) ApplyNextMove() {
+	s.Move(s.nextMv)
+}
 
 func (s *Snake) Move(d vectors.Directions) {
 	mv := vectors.DirToVec[d]
