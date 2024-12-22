@@ -16,35 +16,26 @@ func main() {
 
 func api() {
 	game := gameengine.InitSnakeGame()
-	manager := player.NewManager()
+	playerMgr := player.NewManager()
 
 	http.Handle("/", http.FileServer(http.Dir("./frontend/dist")))
 	http.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
-		// create snake
 		snake := snake.CreateSnake([]*vectors.Vector{{X: 0, Y: 0}, {X: 0, Y: 10}})
 
-		// create connection
-		connection, err := manager.CreateWebsocketConnection(w, r)
+		connection, err := playerMgr.CreateWebsocketConnection(w, r)
 		if err != nil {
 			log.Println("failed_to_create_connection")
 			return
 		}
-		// create channel
-		channel := make(chan player.Event)
 
-		// create player (snake, connection, channel)
+		channel := make(chan player.GameEvent)
 		player := player.CreatePlayer(
 			snake,
 			connection,
 			channel,
-			manager,
+			playerMgr,
 		)
 
-		// addPlayerToGame(player)
 		game.AddPlayer(player)
-
-		go player.WriteMessage() // sendDataToUser
-		// go player.receiveMessage(chanel) // setNextMove
-
 	})
 }
