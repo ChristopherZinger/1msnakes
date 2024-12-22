@@ -1,6 +1,3 @@
-import { getSerializedSnakeMove } from "./snakeMoveProto"
-import * as sm from "./generated/protos/snakemove"
-
 enum WsEventType {
   sendMessage = 'send_message'
 }
@@ -43,9 +40,10 @@ class Connection {
       const ev: WsEvent = data; // TODO: this should be a type error - "unsave any"; check linter settings
 
       if (ev.type === undefined) {
-        console.error("expected event type");
+        console.error("expected event type, got", data);
         return;
       }
+
 
       const subs = this.subscribers[ev.type]
 
@@ -53,6 +51,20 @@ class Connection {
     }
   }
 }
+
+enum Direction {
+  N = 0,
+  E = 1,
+  S = 2,
+  W = 3,
+}
+
+const directions = [
+  Direction.N,
+  Direction.E,
+  Direction.S,
+  Direction.W,
+]
 
 export function testWebSocketConnection() {
   const url = new URL("ws://" + document.location.host + "/ws")
@@ -62,10 +74,14 @@ export function testWebSocketConnection() {
     console.log(ev)
   })
 
+  let i = 0
   const interval = setInterval(function() {
+    const direction = directions[i % Object.values(Direction).length]
+    i++
+
     conn.sendEvent({
       type: WsEventType.sendMessage,
-      payload: getSerializedSnakeMove(sm.main.Direction.E)
+      payload: { direction }
     })
   }, 1000)
   return interval
