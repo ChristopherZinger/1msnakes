@@ -1,33 +1,20 @@
-import { testWebSocketConnection } from './ws'
+import { createWebSocketConnection, WsEventType } from './ws'
+import { clearCanvas, drawLetter, get2dContext, getCanvas } from './renderer'
 
 function main() {
-  testWebSocketConnection()
-  testCanvas()
-}
+  const conn = createWebSocketConnection()
 
-function testCanvas() {
-  const canvas = document.getElementById("canvas")
-  if (!(canvas instanceof HTMLCanvasElement)) {
-    console.error("expected canvas element")
-    return
-  }
+  const canvas = getCanvas()
+  const ctx = get2dContext(canvas)
+  ctx.translate(0, canvas.height)
+  ctx.scale(1, -1)
 
-  const ctx = canvas.getContext("2d")
-  if (!ctx) {
-    console.error("expected 2d context")
-    return
-  }
-  drawTwoRectangles(ctx)
-}
-
-function drawTwoRectangles(ctx: CanvasRenderingContext2D) {
-  ctx.fillStyle = "rgb(200 0 0)";
-  ctx.fillRect(10, 10, 50, 50);
-
-  ctx.fillStyle = "rgb(0 0 200 / 50%)";
-  ctx.fillRect(30, 30, 50, 50);
-
-  ctx.clearRect(50, 50, 50, 50)
+  conn.subscribe(WsEventType.snakePosition, (data) => {
+    clearCanvas(canvas)
+    for (const px of data.payload) {
+      drawLetter(ctx, { x: px.X * 10, y: px.Y * 10 })
+    }
+  })
 }
 
 main()

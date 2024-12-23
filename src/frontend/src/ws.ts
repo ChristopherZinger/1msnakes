@@ -1,9 +1,13 @@
-enum WsEventType {
-  sendMessage = 'send_message'
+export enum WsEventType {
+  sendMessage = 'send_message',
+  snakePosition = 'snake_position'
 }
 
 type WsEvent = {
-  type: WsEventType,
+  type: WsEventType.snakePosition,
+  payload: { X: number, Y: number }[]
+} | {
+  type: WsEventType.sendMessage,
   payload: unknown
 }
 
@@ -22,7 +26,7 @@ class Connection {
     this.subscribers = {}
   }
 
-  public subscribe(evName: WsEventType, cb: (ev: WsEvent) => unknown) {
+  public subscribe<T extends WsEventType>(evName: T, cb: (ev: Extract<WsEvent, { type: T }>) => unknown) {
     if (this.subscribers[evName]) {
       this.subscribers[evName].push(cb)
     } else {
@@ -43,7 +47,6 @@ class Connection {
         console.error("expected event type, got", data);
         return;
       }
-
 
       const subs = this.subscribers[ev.type]
 
@@ -66,17 +69,14 @@ const directions = [
   Direction.W,
 ]
 
-export function testWebSocketConnection() {
+export function createWebSocketConnection() {
   const url = new URL("ws://" + document.location.host + "/ws")
   const conn = new Connection(url)
 
-  conn.subscribe(WsEventType.sendMessage, (ev) => {
-    console.log(ev)
-  })
-
   let i = 0
-  const interval = setInterval(function() {
-    const direction = directions[i % Object.values(Direction).length]
+  setInterval(function() {
+    const direction = directions[i % (directions.length * 4) % directions.length]
+    console.log({ direction })
     i++
 
     conn.sendEvent({
@@ -84,6 +84,6 @@ export function testWebSocketConnection() {
       payload: { direction }
     })
   }, 1000)
-  return interval
-}
 
+  return conn;
+}
