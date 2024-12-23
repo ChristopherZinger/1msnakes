@@ -6,24 +6,26 @@ import (
 )
 
 type Snake struct {
-	Body   []*vectors.Vector
-	nextMv vectors.Directions
-}
-
-func (s *Snake) SetNextMv(v vectors.Directions) {
-	s.nextMv = v
+	Body     []*vectors.Vector
+	nextMove vectors.Directions
 }
 
 func (s *Snake) ApplyNextMove() {
-	s.Move(s.nextMv)
+	s.Move(s.nextMove)
 }
 
+func (s *Snake) SetNextMv(direction vectors.Directions) {
+	s.nextMove = direction
+}
+
+// TODO: this should be private method - but how to test private methods
 func (s *Snake) Move(d vectors.Directions) {
 	mv := vectors.DirToVec[d]
 	s.moveHead(&mv)
 	s.moveTail()
 }
 
+// TODO: this might not be used if we pass snake as lines to frontend
 func (s *Snake) GetPixels() []vectors.Vector {
 	var pixels []vectors.Vector
 
