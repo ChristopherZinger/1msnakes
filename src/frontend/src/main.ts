@@ -1,8 +1,12 @@
-import { createWebSocketConnection, WsEventType } from './ws'
+import { createWebSocketConnection, postSnakeNextMove, WsEventType } from './ws'
 import { clearCanvas, drawLetter, get2dContext, getCanvas } from './renderer'
+import { addSnakeMoveHandler } from './user-input'
 
 function main() {
   const conn = createWebSocketConnection()
+  addSnakeMoveHandler((direction) => {
+    postSnakeNextMove(conn, direction)
+  })
 
   const canvas = getCanvas()
   const ctx = get2dContext(canvas)

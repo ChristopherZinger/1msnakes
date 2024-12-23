@@ -1,3 +1,5 @@
+import { Direction } from "./user-input"
+
 export enum WsEventType {
   sendMessage = 'send_message',
   snakePosition = 'snake_position'
@@ -11,7 +13,7 @@ type WsEvent = {
   payload: unknown
 }
 
-class Connection {
+export class Connection {
   private conn: WebSocket
   private subscribers: Partial<Record<WsEvent['type'], Function[]>>
 
@@ -55,35 +57,16 @@ class Connection {
   }
 }
 
-enum Direction {
-  N = 0,
-  E = 1,
-  S = 2,
-  W = 3,
-}
-
-const directions = [
-  Direction.N,
-  Direction.E,
-  Direction.S,
-  Direction.W,
-]
-
 export function createWebSocketConnection() {
   const url = new URL("ws://" + document.location.host + "/ws")
   const conn = new Connection(url)
 
-  let i = 0
-  setInterval(function() {
-    const direction = directions[i % (directions.length * 4) % directions.length]
-    console.log({ direction })
-    i++
-
-    conn.sendEvent({
-      type: WsEventType.sendMessage,
-      payload: { direction }
-    })
-  }, 1000)
-
   return conn;
+}
+
+export function postSnakeNextMove(conn: Connection, direction: Direction) {
+  conn.sendEvent({
+    type: WsEventType.sendMessage,
+    payload: { direction }
+  })
 }
