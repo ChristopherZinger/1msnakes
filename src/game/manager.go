@@ -1,10 +1,11 @@
-package player
+package game
 
 import (
-	"github.com/gorilla/websocket"
 	"log"
 	"net/http"
 	"sync"
+
+	"github.com/gorilla/websocket"
 )
 
 var (

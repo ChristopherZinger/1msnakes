@@ -1,12 +1,13 @@
-package player
+package game
 
 import (
-	"1msnakes/snake"
 	"1msnakes/vectors"
 	"encoding/json"
-	"github.com/gorilla/websocket"
 	"log"
+
+	"github.com/gorilla/websocket"
 )
+
 
 type GameEvent struct {
 	Type string
@@ -18,7 +19,7 @@ type WebsocketMsg struct {
 }
 
 type Player struct {
-	Snake   *snake.Snake
+	Snake   *Snake
 	Channel chan GameEvent
 
 	manager    *Manager
@@ -27,7 +28,7 @@ type Player struct {
 
 type PlayerList map[*Player]bool
 
-func CreatePlayer(snake *snake.Snake, connection *websocket.Conn, channel chan GameEvent, mgr *Manager) *Player {
+func CreatePlayer(snake *Snake, connection *websocket.Conn, channel chan GameEvent, mgr *Manager) *Player {
 	player := Player{
 		Snake:      snake,
 		connection: connection,

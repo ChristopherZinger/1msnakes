@@ -1,9 +1,7 @@
 package main
 
 import (
-	"1msnakes/gameengine"
-	"1msnakes/player"
-	"1msnakes/snake"
+	"1msnakes/game"
 	"1msnakes/vectors"
 	"log"
 	"net/http"
@@ -15,12 +13,12 @@ func main() {
 }
 
 func api() {
-	game := gameengine.InitSnakeGame()
-	playerMgr := player.NewManager()
+	_game := game.InitSnakeGame()
+	playerMgr := game.NewManager()
 
 	http.Handle("/", http.FileServer(http.Dir("./frontend/dist")))
 	http.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
-		snake := snake.CreateSnake([]*vectors.Vector{{X: 0, Y: 0}, {X: 0, Y: 10}})
+		snake := game.CreateSnake([]*vectors.Vector{{X: 0, Y: 0}, {X: 0, Y: 10}})
 
 		connection, err := playerMgr.CreateWebsocketConnection(w, r)
 		if err != nil {
@@ -28,14 +26,14 @@ func api() {
 			return
 		}
 
-		channel := make(chan player.GameEvent)
-		player := player.CreatePlayer(
+		channel := make(chan game.GameEvent)
+		player := game.CreatePlayer(
 			snake,
 			connection,
 			channel,
 			playerMgr,
 		)
 
-		game.AddPlayer(player)
+		_game.AddPlayer(player)
 	})
 }

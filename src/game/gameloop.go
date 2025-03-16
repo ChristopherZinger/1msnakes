@@ -1,16 +1,15 @@
-package gameengine
+package game
 
 import (
-	"1msnakes/player"
 	"log"
 	"time"
 )
 
 type GameState struct {
-	players []*player.Player
+	players []*Player
 }
 
-func (g *GameState) AddPlayer(players *player.Player) {
+func (g *GameState) AddPlayer(players *Player) {
 	g.players = append(g.players, players)
 }
 
@@ -26,7 +25,7 @@ func theLoop(g *GameState) {
 
 			// redraw
 			for _, p := range g.players {
-				ev := player.Event{
+				ev := GameEvent{
 					Type: "hello",
 				}
 				p.Channel <- ev

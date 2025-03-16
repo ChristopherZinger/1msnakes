@@ -1,7 +1,7 @@
 package visualisation
 
 import (
-	"1msnakes/snake"
+	"1msnakes/game"
 	"1msnakes/vectors"
 	"image"
 	"image/color"
@@ -16,7 +16,7 @@ func Visualize() {
 	size := 100
 	anim := gif.GIF{LoopCount: numFrames}
 
-	snake := snake.CreateSnake([]*vectors.Vector{
+	snake := game.CreateSnake([]*vectors.Vector{
 		{X: 40, Y: 50},
 		{X: 30, Y: 50},
 	})
